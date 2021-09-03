@@ -37,8 +37,14 @@ http.createServer((req, res) => {
     fs.readFile(filePath, (err, content) => {
         if (err) {
             console.log(`Error: ${err.code}`);
-            res.writeHead(500);
-            res.end(`Error: ${err.code}`);
+
+            if (err.code === 'ENOENT') {
+                res.writeHead(404);
+                res.end('404 - file not found');
+            } else {
+                res.writeHead(500);
+                res.end(`System Error: ${err.code}`);
+            }
         } else {
             res.writeHead(200, { 'Content-Type': contentType });
             res.end(content, 'utf-8');
