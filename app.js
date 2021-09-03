@@ -23,6 +23,8 @@ const mimeTypes = {
 };
 
 http.createServer((req, res) => {
+    console.log(`request for ${req.url}`);
+
     let filePath = './static' + req.url;
 
     if (filePath === './static/') {
@@ -34,6 +36,7 @@ http.createServer((req, res) => {
     
     fs.readFile(filePath, (err, content) => {
         if (err) {
+            console.log(`Error: ${err.code}`);
             res.writeHead(500);
             res.end(`Error: ${err.code}`);
         } else {
