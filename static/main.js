@@ -12,3 +12,5 @@ window.addEventListener('load', (event) => {
         context.fillText(`(${event.clientX}, ${event.clientY})`, event.clientX, event.clientY);
     });
 });
+
+const socket = io();
