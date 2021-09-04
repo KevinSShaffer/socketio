@@ -1,5 +1,7 @@
 import { keyDown } from './modules/handlers.js';
 
+const socket = io();
+
 document.addEventListener('keydown', keyDown);
 
 window.addEventListener('load', (event) => {
@@ -9,8 +11,17 @@ window.addEventListener('load', (event) => {
     context.font = '12px serif';
     
     canvas.addEventListener('mousedown', (event) => {
-        context.fillText(`(${event.clientX}, ${event.clientY})`, event.clientX, event.clientY);
+        const coordinates = { x: event.clientX, y: event.clientY };
+
+        context.fillText(`(${coordinates.x}, ${coordinates.y})`, coordinates.x, coordinates.y);
+
+        socket.emit('mousedown', coordinates);
     });
 });
 
-const socket = io();
+socket.on('mousedown', (coordinates) => {
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    
+    context.fillText(`(${coordinates.x}, ${coordinates.y})`, coordinates.x, coordinates.y);
+});
