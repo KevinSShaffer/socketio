@@ -1,13 +1,18 @@
-import { keyDown } from './modules/handlers.js';
+import { characters, numbers, nonalphaPropers, isValidForProperName } from './modules/text.js';
 
 const canvasPaddingInPixels = 10;
-const fontSize = 12
 const socket = io();
 
 let canvas = {};
 let context = {};
 
-let textPosition = { x: 50, y: 50 };
+let nameText = {
+    x: 50, 
+    y: 50,
+    fontSize: 12,
+    text: '',
+    position: function() { return this.x + (.75 * this.fontSize * this.text.length); }
+};
 
 function windowOnLoad(event) {
     canvas = document.getElementById('canvas');
@@ -28,15 +33,21 @@ function resizeCanvas() {
     canvas.setAttribute('width', window.innerWidth - (canvasPaddingInPixels * 2));
     canvas.setAttribute('height', window.innerWidth * 3 / 4 - (canvasPaddingInPixels * 2));
     canvas.setAttribute('padding', `${canvasPaddingInPixels}px`)
-    context.font = `bold ${fontSize}px monospace`;
+    context.font = `bold ${nameText.fontSize}px monospace`;
 }
 
 function onKeyDown(event) {
-    const keyName = event.key;
+    const key = event.key;
+    let character = false;
 
-    context.fillText(keyName, textPosition.x, textPosition.y);
+    if (isValidForProperName(key)) {
+        character = key;
+    }
 
-    textPosition.x += .75 * fontSize;
+    if (character) {
+        nameText.text += character;
+        context.fillText(key, nameText.position(), nameText.y);
+    }
 }
 
 window.onload = windowOnLoad;
