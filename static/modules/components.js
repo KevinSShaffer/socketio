@@ -2,29 +2,50 @@ import { isValidForProperName } from './text.js';
 
 const windowBorderColor = 'darkgrey';
 const windowColor = 'lightgrey';
-const textboxColor = 'white';
-const textboxBorderColor = 'black';
 const formBorder = 3;
-const textboxBorder = 1;
-const nameText = {
-    x: 50, 
-    y: 50,
-    fontSize: 12,
-    text: '',
-    get font() {
-        return `bold ${this.fontSize}px monospace`;
-    },
-    get position() { 
-        return this.x + (.75 * this.fontSize * this.text.length); 
-    }
-};
 
 export class UsernameModal { 
+    // constructor could take an "options" object that includes anchors and relative positioning
     constructor(x, y, width, height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.textbox = new Textbox(95, 100, 30, 12);
+    }
+
+    onkeydown = (event) => {
+        this.textbox.onkeydown(event);
+    };
+
+    render(context) {
+        context.fillStyle = windowColor;
+        context.fillRect(this.x, this.y, this.width, this.height);
+        context.strokeStyle = windowBorderColor;
+        context.lineJoin = 'bevel';
+        context.lineWidth = formBorder;
+        context.strokeRect(this.x, this.y, this.width, this.height);
+
+        this.textbox.render(context);
+    }
+}
+
+export class Textbox {
+    get #font() {
+        return `bold ${this.fontSize}px monospace`;
+    }
+
+    constructor(x, y, maxCharacters, fontSize) {
+        this.x = x;
+        this.y = y;
+        this.maxCharacters = maxCharacters;
+        this.fontSize = fontSize;
+        this.text = '';
+        this.textboxColor = 'white';
+        this.textboxBorderColor = 'black';
+        this.textColor = 'black';
+        this.formBorder = 3;
+        this.textboxBorder = 1;
     }
 
     onkeydown(event) {
@@ -34,35 +55,23 @@ export class UsernameModal {
         if (isValidForProperName(key)) {
             character = key;
         } else if (key === 'Backspace') {
-            nameText.text = nameText.text.slice(0, -1);
+            this.text = this.text.slice(0, -1);
         }
     
         if (character) {
-            nameText.text += character;
-            context.fillText(key, nameText.position, nameText.y);
+            this.text += character;
         }
-    };
+    }
 
     render(context) {
-        context.save();
-        context.fillStyle = 'lightgrey';
-        context.fillRect(80, 80, 300, 200);
-        context.strokeStyle = 'darkgrey';
-        context.lineJoin = 'bevel';
-        context.lineWidth = formBorder;
-        context.strokeRect(80, 80, 300, 200);
+        context.fillStyle = this.textboxColor;
+        context.fillRect(this.x, this.y, this.fontSize * .75 * this.maxCharacters, this.fontSize * 1.5);
+        context.strokeStyle = this.textboxBorderColor;
+        context.lineWidth = this.textboxBorder;
+        context.strokeRect(this.x, this.y, this.fontSize * .75 * this.maxCharacters, this.fontSize * 1.5);
 
-        context.fillStyle = 'white';
-        context.fillRect(95, 100, nameText.fontSize * .75 * 30, nameText.fontSize * 1.5);
-        context.strokeStyle = 'black';
-        context.lineWidth = textboxBorder;
-        context.strokeRect(95, 100, nameText.fontSize * .75 * 30, nameText.fontSize * 1.5);
-        context.restore();
-
-        nameText.x = 95 + textboxBorder + 3;
-        nameText.y = 100 + textboxBorder + nameText.fontSize * 1.5 - textboxBorder * 2 - 3;
-        context.font = nameText.font;
-        context.fillStyle = 'black';
-        context.fillText(nameText.text, nameText.x, nameText.y);
+        context.font = this.#font;
+        context.fillStyle = this.textColor;
+        context.fillText(this.text, this.x + this.textboxBorder + this.fontSize / 4, this.y + this.fontSize * 1.1);
     }
 }
