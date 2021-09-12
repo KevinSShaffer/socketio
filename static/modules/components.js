@@ -1,9 +1,5 @@
 import { isValidForProperName } from './text.js';
 
-const windowBorderColor = 'darkgrey';
-const windowColor = 'lightgrey';
-const formBorder = 3;
-
 export class UsernameModal { 
     // constructor could take an "options" object that includes anchors and relative positioning
     constructor(x, y, width, height) {
@@ -11,7 +7,10 @@ export class UsernameModal {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.textbox = new Textbox(95, 100, 30, 12);
+        this.textbox = new Textbox(x + 15, y + 20, 30, 12);        
+        this.windowBorderColor = 'darkgrey';
+        this.windowColor = 'lightgrey';
+        this.formBorder = 3;
     }
 
     onkeydown = (event) => {
@@ -19,11 +18,11 @@ export class UsernameModal {
     };
 
     render(context) {
-        context.fillStyle = windowColor;
+        context.fillStyle = this.windowColor;
         context.fillRect(this.x, this.y, this.width, this.height);
-        context.strokeStyle = windowBorderColor;
+        context.strokeStyle = this.windowBorderColor;
         context.lineJoin = 'bevel';
-        context.lineWidth = formBorder;
+        context.lineWidth = this.formBorder;
         context.strokeRect(this.x, this.y, this.width, this.height);
 
         this.textbox.render(context);

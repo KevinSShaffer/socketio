@@ -17,11 +17,12 @@ export class Canvas {
         this.#canvas = document.getElementById(elementId);
         this.#context = this.#canvas.getContext('2d');
         this.padding = 10;
-        window.onresize += this.resize;
+        window.onresize = this.resize;
+        this.#canvas.onclick
         this.resize();
     }
 
-    resize() {
+    resize = () => {
         this.#canvas.setAttribute('width', window.innerWidth - (this.padding * 2));
         this.#canvas.setAttribute('height', window.innerWidth * 3 / 4 - (this.padding * 2));
         this.#canvas.setAttribute('padding', `${this.padding}px`);
