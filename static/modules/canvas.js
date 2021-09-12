@@ -19,6 +19,7 @@ export class Canvas {
         this.padding = 10;
         window.onresize = this.resize;
         this.#canvas.onclick = this.onclick;
+        this.#canvas.onmousedown = this.onmousedown;
         this.resize();
         this.backgroundColor = 'green';
     }
@@ -33,10 +34,25 @@ export class Canvas {
     onclick = (event) => {
         for (let i = this.#uiElements.length - 1; i >= 0; i--) {
             const element = this.#uiElements[i];
-            const [y, x] = [event.clientY, event.clientX];
 
-            if (element.isInside(x, y)) {
+            if (element.isInside(event.clientY, event.clientX)) {
                 element.onclick(event);
+
+                break;
+            }
+        }
+    };
+
+    onmousedown = (event) => {
+        // TODO: elements should be modal or modeless and if the top element is
+        //  modal then it avoids the for loop and only checks if the click is 
+        //  inside that modal.
+
+        for (let i = this.#uiElements.length - 1; i >= 0; i--) {
+            const element = this.#uiElements[i];
+
+            if (element.isInside(event.clientY, event.clientX)) {
+                element.onmousedown(event);
 
                 // remove focus from top element
                 this.#uiElements[this.#uiElements.length - 1].focus(false);
