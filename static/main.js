@@ -11,7 +11,9 @@ let nameText = {
     y: 50,
     fontSize: 12,
     text: '',
-    position: function() { return this.x + (.75 * this.fontSize * this.text.length); }
+    get position() { 
+        return this.x + (.75 * this.fontSize * this.text.length); 
+    }
 };
 
 function windowOnLoad(event) {
@@ -46,7 +48,7 @@ function onKeyDown(event) {
 
     if (character) {
         nameText.text += character;
-        context.fillText(key, nameText.position(), nameText.y);
+        context.fillText(key, nameText.position, nameText.y);
     }
 }
 
