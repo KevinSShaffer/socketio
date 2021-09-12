@@ -44,6 +44,8 @@ function onKeyDown(event) {
 
     if (isValidForProperName(key)) {
         character = key;
+    } else if (key === 'Backspace') {
+        nameText.text = nameText.text.slice(0, -1);
     }
 
     if (character) {
