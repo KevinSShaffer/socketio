@@ -59,25 +59,24 @@ document.onkeydown = onKeyDown;
         lastAnimationFrameId = window.requestAnimationFrame(main);
 
         context.fillStyle = 'green';
-        context.fillRect(0, 0, canvas.getAttribute('width'), canvas.getAttribute('height'));
+        context.fillRect(0, 0, canvas.width, canvas.height);
 
-        const border = 3;
+        const formBorder = 3;
         const textboxBorder = 1;
-        context.fillStyle = 'darkgrey';
-        context.fillRect(80, 80, 300, 200);
-        context.fillStyle = 'lightgrey';
-        context.fillRect(80 + border, 80 + border, 300 - border * 2, 200 - border * 2);
         context.save();
-        context.strokeStyle = 'black';
+        context.fillStyle = 'lightgrey';
+        context.fillRect(80, 80, 300, 200);
+        context.strokeStyle = 'darkgrey';
         context.lineJoin = 'bevel';
+        context.lineWidth = formBorder;
+        context.strokeRect(80, 80, 300, 200);
+
+        context.fillStyle = 'white';
+        context.fillRect(95, 100, nameText.fontSize * .75 * 30, nameText.fontSize * 1.5);
+        context.strokeStyle = 'black';
         context.lineWidth = textboxBorder;
         context.strokeRect(95, 100, nameText.fontSize * .75 * 30, nameText.fontSize * 1.5);
         context.restore();
-        context.fillStyle = 'white';
-        context.fillRect(95 + textboxBorder, 
-            100 + textboxBorder, 
-            nameText.fontSize * .75 * 30 - textboxBorder * 2, 
-            nameText.fontSize * 1.5 - textboxBorder * 2);
 
         nameText.x = 95 + textboxBorder + 3;
         nameText.y = 100 + textboxBorder + nameText.fontSize * 1.5 - textboxBorder * 2 - 3;
