@@ -32,26 +32,22 @@ export class Canvas {
     }
 
     onclick = (event) => {
-        for (let i = this.#uiElements.length - 1; i >= 0; i--) {
-            const element = this.#uiElements[i];
-
-            if (element.isInside(event.clientY, event.clientX)) {
+        this.#uiElements.reverseForEach((element) => {
+            if (element.isInside(event.offsetX, event.offsetY)) {
                 element.onclick(event);
 
-                break;
+                return true;
             }
-        }
-    };
+        });
+    }
 
     onmousedown = (event) => {
         // TODO: elements should be modal or modeless and if the top element is
         //  modal then it avoids the for loop and only checks if the click is 
         //  inside that modal.
 
-        for (let i = this.#uiElements.length - 1; i >= 0; i--) {
-            const element = this.#uiElements[i];
-
-            if (element.isInside(event.clientY, event.clientX)) {
+        this.#uiElements.reverseForEach((element, i) => {
+            if (element.isInside(event.offsetX, event.offsetY)) {
                 element.onmousedown(event);
 
                 // remove focus from top element
@@ -64,9 +60,9 @@ export class Canvas {
                 // focus top element
                 this.#uiElements[this.#uiElements.length - 1].focus(true);
 
-                break;
+                return true;
             }
-        }
+        });
     }
 
     render = () => {
