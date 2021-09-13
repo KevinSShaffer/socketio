@@ -2,7 +2,7 @@ import { Textbox } from './controls.js';
 
 export class UsernameModal {
     #controls = [];
-    
+
     // constructor could take an "options" object that includes anchors and relative positioning
     constructor(x, y, width, height) {
         this.x = x;
@@ -34,11 +34,10 @@ export class UsernameModal {
     };
 
     onmousedown = (event) => {
-
     };
 
-    isInside = (x, y) => y > this.y && y < this.y + this.height &&
-    x > this.x && x < this.x + this.width;
+    isInside = (x, y) => y >= this.y && y <= this.y + this.height &&
+        x >= this.x && x <= this.x + this.width;
 
     render(context) {
         context.fillStyle = this.windowColor;

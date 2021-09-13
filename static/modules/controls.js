@@ -36,8 +36,11 @@ export class Textbox {
     onclick = (event) => {
     };
 
-    isInside = (x, y) => y > this.y && y < this.y + this.height &&
-    x > this.x && x < this.x + this.width;
+    onmousedown = (event) => {
+    };
+
+    isInside = (x, y) => y >= this.y && y <= this.y + this.height &&
+        x >= this.x && x <= this.x + this.width;
 
     render(context) {
         context.fillStyle = this.textboxColor;
